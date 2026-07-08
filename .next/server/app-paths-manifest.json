@@ -1,16 +1,3 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/contact/route": "app/api/contact/route.js",
-  "/api/intake/route": "app/api/intake/route.js",
-  "/api/volunteer/route": "app/api/volunteer/route.js",
-  "/api/partnership/route": "app/api/partnership/route.js",
-  "/page": "app/page.js",
-  "/privacy/page": "app/privacy/page.js",
-  "/about/page": "app/about/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/get-involved/page": "app/get-involved/page.js",
-  "/terms/page": "app/terms/page.js",
-  "/programs/page": "app/programs/page.js",
-  "/support/page": "app/support/page.js",
-  "/donate/page": "app/donate/page.js"
+  "/page": "app/page.js"
 }
