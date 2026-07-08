@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-primary-navy: #1A2E40;
+  --color-accent-gold: #E5A93C;
+  --color-bg-warm-sand: #F9F8F6;
+  --color-text-charcoal: #2D3142;
+  --font-heading: var(--font-montserrat), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading text-primary-navy font-bold tracking-tight;
+  }
+}

@@ -1,0 +1,99 @@
+import { MapPin, Phone, Mail } from "lucide-react";
+
+export const metadata = {
+  title: "Contact Us | UpliftGrove Foundation",
+  description: "Get in touch with the UpliftGrove Foundation for general inquiries.",
+};
+
+export default function ContactPage() {
+  return (
+    <div className="bg-bg-warm-sand min-h-screen">
+      <section className="bg-primary-navy py-20 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">Contact Us</h1>
+          <p className="text-xl max-w-2xl mx-auto text-gray-300">
+            Have a general question about our programs, partnerships, or operations? We'd love to hear from you.
+          </p>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        
+        <div className="bg-yellow-50 border-l-4 border-accent-gold p-6 mb-12 max-w-4xl mx-auto rounded-r-xl">
+          <h3 className="font-heading font-semibold text-primary-navy mb-2">Looking for counseling support?</h3>
+          <p className="text-gray-700">
+            Please do not use this general contact form for confidential support requests. Instead, use our secure <a href="/support" className="text-primary-navy font-bold underline hover:text-accent-gold">Intake Form</a> to speak with a counselor.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-5xl mx-auto">
+          
+          {/* Contact Details */}
+          <div>
+            <h2 className="text-3xl mb-8">Get in Touch</h2>
+            
+            <div className="space-y-8">
+              <div className="flex items-start">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary-navy shadow-sm mr-4 flex-shrink-0">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-semibold text-xl mb-1">Office Location</h3>
+                  <p className="text-gray-600">[NEEDS INPUT: Physical Address, e.g., Accra, Ghana]</p>
+                  <p className="text-sm text-gray-500 mt-1">Office Hours: [NEEDS INPUT, e.g., Mon-Fri, 9am-5pm]</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary-navy shadow-sm mr-4 flex-shrink-0">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-semibold text-xl mb-1">Phone Number</h3>
+                  <p className="text-gray-600">[NEEDS INPUT: General Phone Number]</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary-navy shadow-sm mr-4 flex-shrink-0">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-semibold text-xl mb-1">Email Address</h3>
+                  <p className="text-gray-600">[NEEDS INPUT: Email Address, e.g., info@upliftgrove.org]</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* General Contact Form */}
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h3 className="text-2xl mb-6">Send a Message</h3>
+            <form className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-text-charcoal mb-1">Name</label>
+                <input type="text" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-gold" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-text-charcoal mb-1">Email</label>
+                <input type="email" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-gold" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-text-charcoal mb-1">Subject</label>
+                <input type="text" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-gold" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-text-charcoal mb-1">Message</label>
+                <textarea rows={4} className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-gold resize-none"></textarea>
+              </div>
+              <button type="button" className="w-full px-6 py-3 bg-primary-navy text-white font-heading font-semibold rounded-md hover:bg-opacity-90 transition-opacity">
+                Send Inquiry
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}

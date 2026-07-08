@@ -1,0 +1,6 @@
+{
+  "name": "UpliftGrove Foundation",
+  "description": "UpliftGrove Foundation \u2014 A nonprofit platform supporting Ghanaian youth through counseling, guidance, and community programs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
