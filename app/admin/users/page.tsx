@@ -19,7 +19,7 @@ export default async function UsersPage() {
     const supabase = getSupabase();
     const { data, error } = await supabase
       .from("admin_users")
-      .select("id, username, permissions, is_active, created_at")
+      .select("id, username, email, permissions, is_active, created_at")
       .order("created_at", { ascending: false });
     if (error) {
       if (error.code === "42P01" || error.message.includes("schema cache")) {

@@ -9,18 +9,22 @@ import { PERMISSIONS, type PermissionKey } from "@/lib/permissions";
 export interface AdminUserRow {
   id: string;
   username: string;
+  email: string | null;
   permissions: PermissionKey[];
   is_active: boolean;
   created_at: string;
 }
 
 const TABLE_SQL = `create table if not exists public.admin_users (
-  id            uuid primary key default gen_random_uuid(),
-  created_at    timestamptz not null default now(),
-  username      text unique not null,
-  password_hash text not null,
-  permissions   text[] not null default '{}',
-  is_active     boolean not null default true
+  id                  uuid primary key default gen_random_uuid(),
+  created_at          timestamptz not null default now(),
+  username            text unique not null,
+  email               text unique,
+  password_hash       text not null,
+  permissions         text[] not null default '{}',
+  is_active           boolean not null default true,
+  reset_token_hash    text,
+  reset_token_expires timestamptz
 );
 alter table public.admin_users enable row level security;`;
 
@@ -38,6 +42,7 @@ export function AdminUsers({
 
   // Add-user form state
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPerms, setNewPerms] = useState<PermissionKey[]>([
     "view_support",
@@ -60,7 +65,7 @@ export function AdminUsers({
       const res = await fetch("/api/admin/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, permissions: newPerms }),
+        body: JSON.stringify({ username, email, password, permissions: newPerms }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -68,6 +73,7 @@ export function AdminUsers({
         return;
       }
       setUsername("");
+      setEmail("");
       setPassword("");
       setNewPerms(["view_support", "manage_status"]);
       router.refresh();
@@ -144,18 +150,6 @@ export function AdminUsers({
       </header>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {tableMissing && (
-          <div className="p-5 bg-yellow-50 border border-yellow-200 rounded-xl text-sm text-yellow-900">
-            <p className="font-semibold mb-2">One-time setup needed</p>
-            <p className="mb-3">
-              Run this in your Supabase <strong>SQL Editor</strong> to create the
-              users table, then refresh this page:
-            </p>
-            <pre className="bg-white/70 border border-yellow-200 rounded-md p-3 overflow-x-auto text-xs text-gray-800 whitespace-pre">
-              {TABLE_SQL}
-            </pre>
-          </div>
-        )}
         {loadError && (
           <div className="p-4 bg-red-50 text-red-700 text-sm rounded-md border border-red-200">
             {loadError}
@@ -186,6 +180,17 @@ export function AdminUsers({
                 />
               </div>
               <div>
+                <label className="block text-sm font-medium text-text-charcoal mb-1">Email (for password resets)</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="off"
+                  className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-gold"
+                />
+              </div>
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-text-charcoal mb-1">Password (min 8)</label>
                 <input
                   type="password"
@@ -242,6 +247,7 @@ export function AdminUsers({
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div>
                       <p className="font-semibold text-primary-navy">{u.username}</p>
+                      <p className="text-sm text-gray-500">{u.email || "no email"}</p>
                       <p className="text-xs text-gray-400">
                         Added {new Date(u.created_at).toLocaleDateString()}
                       </p>

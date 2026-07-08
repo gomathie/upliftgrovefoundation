@@ -21,15 +21,18 @@ export function isMailConfigured(): boolean {
 }
 
 export async function sendMail(opts: {
+  to?: string; // defaults to SMTP_TO_EMAIL (the team inbox)
   subject: string;
   text: string;
   html?: string;
 }): Promise<{ ok: boolean; error?: string }> {
   const cfg = readConfig();
   if (!cfg) {
-    console.warn("[mail] SMTP not configured — skipping notification.");
+    console.warn("[mail] SMTP not configured — skipping email.");
     return { ok: false, error: "not configured" };
   }
+
+  const recipient = opts.to || cfg.to;
 
   try {
     const transporter = nodemailer.createTransport({
@@ -37,7 +40,7 @@ export async function sendMail(opts: {
       port: cfg.port,
       secure: cfg.port === 465, // 465 = implicit TLS; 587/25 = STARTTLS
       auth: cfg.user && cfg.pass ? { user: cfg.user, pass: cfg.pass } : undefined,
-      // Keep timeouts short so a slow/dead SMTP never hangs a form submission.
+      // Keep timeouts short so a slow/dead SMTP never hangs a request.
       connectionTimeout: 8000,
       greetingTimeout: 8000,
       socketTimeout: 8000,
@@ -45,7 +48,7 @@ export async function sendMail(opts: {
 
     await transporter.sendMail({
       from: cfg.from,
-      to: cfg.to,
+      to: recipient,
       subject: opts.subject,
       text: opts.text,
       html: opts.html,
@@ -56,6 +59,32 @@ export async function sendMail(opts: {
     console.error("[mail] send failed:", msg);
     return { ok: false, error: msg };
   }
+}
+
+// Password-reset email to a specific admin user.
+export async function sendPasswordResetEmail(to: string, resetUrl: string) {
+  const subject = "Reset your UpliftGrove admin password";
+  const text = [
+    "A password reset was requested for your UpliftGrove admin account.",
+    "",
+    `Reset your password (link valid for 1 hour): ${resetUrl}`,
+    "",
+    "If you did not request this, you can ignore this email — your password stays unchanged.",
+  ].join("\n");
+  const html = `
+    <div style="font-family:Arial,sans-serif;color:#2D3142;max-width:520px">
+      <h2 style="color:#1A2E40;margin:0 0 8px">Reset your password</h2>
+      <p style="margin:0 0 16px">A password reset was requested for your UpliftGrove admin account.</p>
+      <a href="${resetUrl}" style="display:inline-block;background:#E5A93C;color:#1A2E40;
+         font-weight:bold;text-decoration:none;padding:10px 18px;border-radius:6px">
+        Reset password
+      </a>
+      <p style="font-size:13px;color:#6b7280;margin:16px 0 0">
+        This link is valid for 1 hour. If you didn't request this, ignore this
+        email — your password stays unchanged.
+      </p>
+    </div>`;
+  return sendMail({ to, subject, text, html });
 }
 
 // Privacy-respecting notification for a new support request. Deliberately does

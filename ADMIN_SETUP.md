@@ -105,3 +105,29 @@ SMTP_TO_EMAIL=team@yourdomain.org   # where alerts are delivered
 ```
 
 If SMTP is not fully set, notifications are simply skipped (logged, not errored).
+
+## Password reset (self-service)
+
+Each additional user has an **email**. If they forget their password:
+
+1. On `/admin/login` they click **Forgot password?**
+2. They enter their email; if it matches an active account, a reset link
+   (valid **1 hour**) is emailed to them.
+3. The link opens `/admin/reset-password`, where they set a new password.
+
+Reset emails use the same **SMTP** settings as the support-request
+notifications — they only send once SMTP is fully configured. The owner
+(env password) does not use this flow.
+
+**If you created `admin_users` before this feature**, add the new columns:
+
+```sql
+alter table public.admin_users
+  add column if not exists email text unique,
+  add column if not exists reset_token_hash text,
+  add column if not exists reset_token_expires timestamptz;
+```
+
+Security notes: the "forgot" endpoint always returns the same response (it never
+reveals whether an email is registered). Reset tokens are stored **hashed**
+(SHA-256), are single-use, and expire after an hour.

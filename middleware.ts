@@ -6,9 +6,16 @@ import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isLoginPath =
-    pathname === "/admin/login" || pathname === "/api/admin/login";
-  if (isLoginPath) return NextResponse.next();
+  // Paths reachable without a session (login + password reset flow).
+  const PUBLIC_ADMIN_PATHS = new Set([
+    "/admin/login",
+    "/admin/forgot-password",
+    "/admin/reset-password",
+    "/api/admin/login",
+    "/api/admin/forgot-password",
+    "/api/admin/reset-password",
+  ]);
+  if (PUBLIC_ADMIN_PATHS.has(pathname)) return NextResponse.next();
 
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const authed = await verifySessionToken(token);

@@ -7,6 +7,10 @@ import { sanitizePermissions } from "@/lib/permissions";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 async function requireManageUsers() {
   const session = await getSession();
   if (!can(session, "manage_users")) return null;
@@ -22,7 +26,7 @@ export async function GET() {
     const supabase = getSupabase();
     const { data, error } = await supabase
       .from("admin_users")
-      .select("id, username, permissions, is_active, created_at")
+      .select("id, username, email, permissions, is_active, created_at")
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
     return NextResponse.json({ users: data ?? [] });
@@ -38,11 +42,13 @@ export async function POST(request: NextRequest) {
   if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   let username = "";
+  let email = "";
   let password = "";
   let permissions: string[] = [];
   try {
     const body = await request.json();
     username = typeof body?.username === "string" ? body.username.trim() : "";
+    email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
     password = typeof body?.password === "string" ? body.password : "";
     permissions = sanitizePermissions(body?.permissions);
   } catch {
@@ -51,6 +57,9 @@ export async function POST(request: NextRequest) {
 
   if (username.length < 3) {
     return NextResponse.json({ error: "Username must be at least 3 characters." }, { status: 400 });
+  }
+  if (!isValidEmail(email)) {
+    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
   if (password.length < 8) {
     return NextResponse.json({ error: "Password must be at least 8 characters." }, { status: 400 });
@@ -64,10 +73,10 @@ export async function POST(request: NextRequest) {
     const password_hash = await bcrypt.hash(password, 10);
     const { error } = await supabase
       .from("admin_users")
-      .insert({ username, password_hash, permissions, is_active: true });
+      .insert({ username, email, password_hash, permissions, is_active: true });
     if (error) {
       if (error.code === "23505") {
-        return NextResponse.json({ error: "That username already exists." }, { status: 409 });
+        return NextResponse.json({ error: "That username or email already exists." }, { status: 409 });
       }
       throw new Error(error.message);
     }
@@ -96,6 +105,13 @@ export async function PATCH(request: NextRequest) {
   const update: Record<string, unknown> = {};
   if ("permissions" in body) update.permissions = sanitizePermissions(body.permissions);
   if ("is_active" in body) update.is_active = body.is_active === true;
+  if (typeof body.email === "string") {
+    const email = body.email.trim().toLowerCase();
+    if (!isValidEmail(email)) {
+      return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
+    }
+    update.email = email;
+  }
   if (typeof body.password === "string" && body.password.length > 0) {
     if (body.password.length < 8) {
       return NextResponse.json({ error: "Password must be at least 8 characters." }, { status: 400 });

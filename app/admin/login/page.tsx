@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Lock, Loader2 } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -99,6 +100,14 @@ export default function AdminLoginPage() {
               "Sign In"
             )}
           </button>
+          <div className="text-center">
+            <Link
+              href="/admin/forgot-password"
+              className="text-sm text-gray-500 hover:text-primary-navy"
+            >
+              Forgot password?
+            </Link>
+          </div>
         </form>
       </div>
     </div>
