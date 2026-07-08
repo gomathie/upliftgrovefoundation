@@ -56,11 +56,10 @@ export default function ProgramsPage() {
             </div>
             <div className="order-1 lg:order-2 relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src="https://picsum.photos/seed/counseling-main/1000/800"
+                src="/images/counseling.webp"
                 alt="Youth in a counseling session"
                 fill
                 className="object-cover"
-                referrerPolicy="no-referrer"
               />
             </div>
           </div>
@@ -71,11 +70,10 @@ export default function ProgramsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src="https://picsum.photos/seed/mentorship-main/1000/800"
+                src="/images/music-therapy.webp"
                 alt="Youth mentorship"
                 fill
                 className="object-cover"
-                referrerPolicy="no-referrer"
               />
             </div>
             <div>
@@ -118,11 +116,10 @@ export default function ProgramsPage() {
             </div>
             <div className="order-1 lg:order-2 relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src="https://picsum.photos/seed/community-main/1000/800"
+                src="/images/community.webp"
                 alt="Community workshop"
                 fill
                 className="object-cover"
-                referrerPolicy="no-referrer"
               />
             </div>
           </div>

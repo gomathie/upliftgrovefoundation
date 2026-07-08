@@ -40,7 +40,7 @@ export function Footer() {
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
           <p>&copy; {new Date().getFullYear()} UpliftGrove Foundation LBG. All rights reserved.</p>
           <div className="mt-4 md:mt-0">
-            <p>Company Registration: CG079131125 &middot; TIN: C0066475368</p>
+            <p>Registration: CG079131125 &middot; TIN: C0066475368</p>
           </div>
         </div>
       </div>

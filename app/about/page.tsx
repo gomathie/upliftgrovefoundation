@@ -33,11 +33,10 @@ export default function AboutPage() {
             </div>
             <div className="relative h-96 rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src="https://picsum.photos/seed/aboutstory/800/800"
+                src="/images/about-story.webp"
                 alt="Community gathering"
                 fill
                 className="object-cover"
-                referrerPolicy="no-referrer"
               />
             </div>
           </div>
@@ -74,18 +73,17 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { seed: "team1", name: "Isaac Mensah", role: "Executive Council Member / Director" },
-              { seed: "team2", name: "Martha Ankai-Macaidoo", role: "Executive Council Member / Director" },
-              { seed: "team3", name: "Nana Kofi Entwi-Mensah", role: "Executive Council Member / Director & Secretary" },
+              { seed: "team-isaac", name: "Isaac Mensah", role: "Executive Council Member / Director" },
+              { seed: "team-martha", name: "Martha Ankai-Macaidoo", role: "Executive Council Member / Director" },
+              { seed: "team-nanakofi", name: "Nana Kofi Entwi-Mensah", role: "Executive Council Member / Director & Secretary" },
             ].map((member) => (
               <div key={member.seed} className="bg-white p-8 rounded-2xl shadow-sm text-center">
                 <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden mb-6 border-4 border-bg-warm-sand">
                   <Image
-                     src={`https://picsum.photos/seed/${member.seed}/400/400`}
+                     src={`/images/${member.seed}.webp`}
                      alt={`${member.name} placeholder photo`}
                      fill
                      className="object-cover"
-                     referrerPolicy="no-referrer"
                   />
                 </div>
                 <h3 className="text-xl mb-1">{member.name}</h3>

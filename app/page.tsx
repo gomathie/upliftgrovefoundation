@@ -10,12 +10,11 @@ export default function Home() {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://picsum.photos/seed/ghana-youth/1920/1080"
+            src="/images/hero.webp"
             alt="Ghanaian youth smiling and learning together"
             fill
             className="object-cover"
             priority
-            referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-primary-navy/70 mix-blend-multiply"></div>
         </div>
@@ -99,11 +98,10 @@ export default function Home() {
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
               <div className="relative h-48">
                 <Image
-                  src="https://picsum.photos/seed/counseling/800/600"
+                  src="/images/counseling.webp"
                   alt="Counseling session"
                   fill
                   className="object-cover"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="p-8">
@@ -121,11 +119,10 @@ export default function Home() {
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
               <div className="relative h-48">
                 <Image
-                  src="https://picsum.photos/seed/mentorship/800/600"
+                  src="/images/music-therapy.webp"
                   alt="Mentorship program"
                   fill
                   className="object-cover"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="p-8">
@@ -143,11 +140,10 @@ export default function Home() {
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
               <div className="relative h-48">
                 <Image
-                  src="https://picsum.photos/seed/community/800/600"
+                  src="/images/community.webp"
                   alt="Community outreach"
                   fill
                   className="object-cover"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="p-8">
