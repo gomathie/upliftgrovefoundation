@@ -13,15 +13,18 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 // instead of crashing at import time.
 export function getSupabase(): SupabaseClient {
   const url = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // New Supabase key name (sb_secret_...); falls back to the legacy
+  // service_role env name if that's what's set.
+  const secretKey =
+    process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!url || !serviceRoleKey) {
+  if (!url || !secretKey) {
     throw new Error(
-      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local"
+      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_SECRET_KEY in .env.local"
     );
   }
 
-  return createClient(url, serviceRoleKey, {
+  return createClient(url, secretKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,

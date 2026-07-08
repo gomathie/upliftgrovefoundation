@@ -77,17 +77,21 @@ alter table public.partnership_inquiries  enable row level security;
 
 ## 3. Add your keys
 
-In **Settings > API**, copy:
+In **Settings > API keys**, copy:
 
 - **Project URL** → `SUPABASE_URL`
-- **service_role** secret key → `SUPABASE_SERVICE_ROLE_KEY`  (the secret one, **not** anon)
+- **Secret key** (`sb_secret_...`) → `SUPABASE_SECRET_KEY`  — the **Secret** key, **not** the Publishable one
 
 Paste them into `.env.local` (already gitignored):
 
 ```
 SUPABASE_URL=https://xxxxxxxxxxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...
+SUPABASE_SECRET_KEY=sb_secret_...
 ```
+
+> The Publishable key (`sb_publishable_...`) is browser-safe but subject to RLS,
+> so it cannot write to our locked-down tables. We use the Secret key server-side
+> so RLS can stay deny-all.
 
 Restart the dev server (`npm run dev`) so it picks up the new values.
 
