@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, RefreshCw, Inbox, Shield } from "lucide-react";
+import { LogOut, RefreshCw, Inbox, Shield, Download, FileText } from "lucide-react";
+import {
+  exportCsv,
+  exportPdf,
+  exportFilename,
+  type ExportColumn,
+} from "@/lib/adminExport";
 
 export interface IntakeRow {
   id: string;
@@ -72,6 +78,37 @@ const statusStyles: Record<string, string> = {
   closed: "bg-green-100 text-green-800",
 };
 
+// Column definitions shared by CSV and PDF export (one source of truth).
+const intakeColumns: ExportColumn<IntakeRow>[] = [
+  { header: "Received", value: (r) => fmtDate(r.created_at) },
+  { header: "Name / Alias", value: (r) => r.name || "" },
+  { header: "Location", value: (r) => r.location },
+  { header: "Phone / WhatsApp", value: (r) => r.phone },
+  { header: "Message", value: (r) => r.message },
+  { header: "Status", value: (r) => r.status },
+];
+const contactColumns: ExportColumn<ContactRow>[] = [
+  { header: "Received", value: (r) => fmtDate(r.created_at) },
+  { header: "Name", value: (r) => r.name },
+  { header: "Email", value: (r) => r.email },
+  { header: "Subject", value: (r) => r.subject },
+  { header: "Message", value: (r) => r.message },
+];
+const volunteerColumns: ExportColumn<VolunteerRow>[] = [
+  { header: "Received", value: (r) => fmtDate(r.created_at) },
+  { header: "Full Name", value: (r) => r.full_name },
+  { header: "Email", value: (r) => r.email },
+  { header: "Skills / Interest", value: (r) => r.skills },
+  { header: "Message", value: (r) => r.message || "" },
+];
+const partnershipColumns: ExportColumn<PartnershipRow>[] = [
+  { header: "Received", value: (r) => fmtDate(r.created_at) },
+  { header: "Organization", value: (r) => r.organization_name },
+  { header: "Contact Person", value: (r) => r.contact_person },
+  { header: "Email", value: (r) => r.email },
+  { header: "Idea", value: (r) => r.partnership_idea || "" },
+];
+
 export function AdminDashboard({
   data,
   loadError,
@@ -112,6 +149,42 @@ export function AdminDashboard({
       setUpdatingId(null);
     }
   }
+
+  const [exporting, setExporting] = useState(false);
+
+  async function handleExport(kind: "csv" | "pdf") {
+    const run = async <T,>(
+      title: string,
+      base: string,
+      columns: ExportColumn<T>[],
+      rows: T[]
+    ) => {
+      if (rows.length === 0) return;
+      if (kind === "csv") {
+        exportCsv(exportFilename(base, "csv"), columns, rows);
+      } else {
+        setExporting(true);
+        try {
+          await exportPdf(title, exportFilename(base, "pdf"), columns, rows);
+        } finally {
+          setExporting(false);
+        }
+      }
+    };
+
+    switch (tab) {
+      case "intake":
+        return run("Support Requests", "support-requests", intakeColumns, data.intake);
+      case "contact":
+        return run("Contact Messages", "contact", contactColumns, data.contact);
+      case "volunteer":
+        return run("Volunteer Applications", "volunteers", volunteerColumns, data.volunteer);
+      case "partnership":
+        return run("Partnership Inquiries", "partnerships", partnershipColumns, data.partnership);
+    }
+  }
+
+  const activeCount = counts[tab];
 
   return (
     <div className="min-h-full">
@@ -171,6 +244,29 @@ export function AdminDashboard({
               <span className="ml-1 text-xs text-gray-400">({counts[t.key]})</span>
             </button>
           ))}
+        </div>
+
+        {/* Export toolbar */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm text-gray-500">
+            {activeCount} {activeCount === 1 ? "record" : "records"}
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handleExport("csv")}
+              disabled={activeCount === 0}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-gray-300 text-primary-navy bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Download className="w-4 h-4" /> Export CSV
+            </button>
+            <button
+              onClick={() => handleExport("pdf")}
+              disabled={activeCount === 0 || exporting}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-gray-300 text-primary-navy bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FileText className="w-4 h-4" /> {exporting ? "Preparing…" : "Export PDF"}
+            </button>
+          </div>
         </div>
 
         {/* Tables */}
