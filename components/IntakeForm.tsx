@@ -1,48 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { CheckCircle2, Loader2 } from "lucide-react";
-
-// Form Validation Schema
-const formSchema = z.object({
-  name: z.string().optional(),
-  location: z.string().min(2, { message: "Please enter your general location or region." }),
-  phone: z.string().min(8, { message: "Please enter a valid phone or WhatsApp number so we can reach you." }),
-  message: z.string().min(10, { message: "Please share a little bit about what you are going through." }),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { intakeSchema, type IntakeFormData } from "@/lib/intake";
 
 export function IntakeForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
 
+  // Honeypot field, kept outside react-hook-form so it is never validated or
+  // shown to real users. Bots that auto-fill every input will trip it.
+  const honeypotRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  } = useForm<IntakeFormData>({
+    resolver: zodResolver(intakeSchema),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: IntakeFormData) => {
     setIsSubmitting(true);
     setServerError("");
-    
-    // Simulate server action / API call
+
     try {
-      // In a real app, you would send `data` to a secure server endpoint here
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
+      const res = await fetch("/api/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          company: honeypotRef.current?.value ?? "",
+        }),
+      });
+
+      if (!res.ok) {
+        const payload = await res.json().catch(() => ({}));
+        throw new Error(
+          payload.error ||
+            "Something went wrong securely submitting your request. Please try again or use the WhatsApp option."
+        );
+      }
+
       setIsSuccess(true);
       reset();
     } catch (error) {
-      setServerError("Something went wrong securely submitting your request. Please try again or use the WhatsApp option.");
+      setServerError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong securely submitting your request. Please try again or use the WhatsApp option."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -70,7 +81,19 @@ export function IntakeForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      
+
+      {/* Honeypot: hidden from users, catches spam bots. Do not remove. */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="company">Company (leave this blank)</label>
+        <input
+          id="company"
+          type="text"
+          ref={honeypotRef}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {serverError && (
         <div className="p-4 bg-red-50 text-red-700 text-sm rounded-md border border-red-200">
           {serverError}
