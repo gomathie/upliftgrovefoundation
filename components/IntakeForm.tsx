@@ -38,21 +38,21 @@ export function IntakeForm() {
         }),
       });
 
+      const result = await res.json();
+
       if (!res.ok) {
-        const payload = await res.json().catch(() => ({}));
-        throw new Error(
-          payload.error ||
+        setServerError(
+          result.error ||
             "Something went wrong securely submitting your request. Please try again or use the WhatsApp option."
         );
+        return;
       }
 
       setIsSuccess(true);
       reset();
-    } catch (error) {
+    } catch {
       setServerError(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong securely submitting your request. Please try again or use the WhatsApp option."
+        "Something went wrong securely submitting your request. Please try again or use the WhatsApp option."
       );
     } finally {
       setIsSubmitting(false);
