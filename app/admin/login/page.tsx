@@ -6,6 +6,7 @@ import { Lock, Loader2 } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -57,8 +58,23 @@ export default function AdminLoginPage() {
             </div>
           )}
           <div>
+            <label htmlFor="username" className="block text-sm font-medium text-text-charcoal mb-1">
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              autoFocus
+              className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-gold focus:border-transparent"
+            />
+          </div>
+          <div>
             <label htmlFor="password" className="block text-sm font-medium text-text-charcoal mb-1">
-              Admin Password
+              Password
             </label>
             <input
               id="password"
@@ -67,7 +83,6 @@ export default function AdminLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              autoFocus
               className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent-gold focus:border-transparent"
             />
           </div>

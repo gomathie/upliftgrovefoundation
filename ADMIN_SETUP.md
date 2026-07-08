@@ -1,48 +1,84 @@
 # Admin Panel
 
 A password-protected area at **`/admin`** where staff review every form
-submission (Support / Contact / Volunteer / Partnership) and track follow-up on
-support requests.
+submission (Support / Contact / Volunteer / Partnership), track follow-up on
+support requests, export data, and (for the owner) manage additional users.
 
-## How it works
+## Accounts & permissions
 
-- **One shared admin password** (`ADMIN_PASSWORD`) is exchanged at
-  `/admin/login` for a short-lived (8h) signed session cookie.
-- The cookie is **httpOnly** and signed with `ADMIN_SESSION_SECRET` (via `jose`).
-- **Middleware** (`middleware.ts`) gates every `/admin` page and `/api/admin`
-  route — no valid session means pages redirect to login and API calls get 401.
-- The dashboard reads submissions **server-side with the Supabase secret key**,
-  so the browser never touches the database and RLS stays fully locked.
+There are two kinds of login:
+
+- **Owner / super-admin** — logs in with username `admin` (or `ADMIN_USERNAME`)
+  and the `ADMIN_PASSWORD` from the environment. Always has every permission,
+  including user management. Cannot be locked out or deleted.
+- **Additional users** — created by the owner in **Admin → Users**, stored in
+  the `admin_users` table with hashed (bcrypt) passwords and a specific set of
+  permissions.
+
+Permissions (assigned per user):
+
+| Permission | Grants |
+|---|---|
+| View support requests | See the Support Requests tab |
+| View contact messages | See the Contact tab |
+| View volunteer applications | See the Volunteers tab |
+| View partnership inquiries | See the Partnerships tab |
+| Update support request status | Change Pending → Contacted → Closed |
+| Export CSV / PDF | Use the export buttons |
+| Manage admin users | Add/edit/remove users and assign permissions |
+
+Enforcement is **server-side**: the dashboard only queries tables a user may
+view, and the status/user APIs re-check permissions on every call. The UI also
+hides anything the user can't access. Deactivating a user or changing their
+permissions takes effect on their **next request** (no need to wait for their
+session to expire).
 
 ## Setup
 
-1. In `.env.local`, set a strong `ADMIN_PASSWORD`. `ADMIN_SESSION_SECRET` is
-   already generated for you (keep it private). To regenerate the secret:
-   ```
-   node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
-   ```
-2. Restart the dev server (`npm run dev`).
-3. Go to **http://localhost:3000/admin**, enter the password, and you're in.
+### 1. Environment (`.env.local`)
 
-## Using it
+```
+ADMIN_PASSWORD=<a strong owner password>
+ADMIN_SESSION_SECRET=<already generated for you>
+# ADMIN_USERNAME=admin   # optional; defaults to "admin"
+```
 
-- **Summary cards** show totals per form type, plus how many support requests
-  are still "new" (pending).
-- **Tabs** switch between the four submission types, newest first.
-- **Support Requests** have a status dropdown — set each to **Pending →
-  Contacted → Closed** as you follow up. This records `handled_at` automatically.
-  Phone numbers link straight to WhatsApp; emails are click-to-mail.
-- **Log out** clears the session immediately.
+### 2. Users table (only needed for additional users)
+
+The owner login works without this. To enable additional users, run this once
+in the Supabase **SQL Editor**:
+
+```sql
+create table if not exists public.admin_users (
+  id            uuid primary key default gen_random_uuid(),
+  created_at    timestamptz not null default now(),
+  username      text unique not null,
+  password_hash text not null,
+  permissions   text[] not null default '{}',
+  is_active     boolean not null default true
+);
+alter table public.admin_users enable row level security;
+```
+
+> RLS with no policies = the table is only reachable via the server (secret
+> key). Passwords are stored as bcrypt hashes, never plaintext.
+
+### 3. Use it
+
+1. Restart the dev server (`npm run dev`).
+2. Go to **http://localhost:3000/admin**, log in as the owner.
+3. To add staff: **Users** (top-right) → fill username, password, tick the
+   permissions → **Add user**. They can now log in at `/admin` with those rights.
+
+## Dashboard features
+
+- **Summary cards** and **tabs** per submission type (only the ones you may view).
+- **Support Requests**: status dropdown (Pending / Contacted / Closed), records
+  `handled_at`; phone links to WhatsApp, emails are click-to-mail.
+- **Export**: CSV (opens in Excel) and PDF (branded, landscape) of the current tab.
 
 ## Production
 
-Set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` in your host's environment
-variables (Vercel / Netlify / Cloudflare), alongside `SUPABASE_URL` and
-`SUPABASE_SECRET_KEY`. The admin pages are marked `noindex` so search engines
-won't list them.
-
-## Upgrading later (optional)
-
-This is intentionally simple (one shared password). If you later need multiple
-named staff accounts with individual logins and audit trails, switch to Supabase
-Auth — ask the developer to build that as the next slice.
+Set `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` (and optionally `ADMIN_USERNAME`)
+in your host's environment variables, alongside the Supabase ones. Admin pages
+are `noindex`.

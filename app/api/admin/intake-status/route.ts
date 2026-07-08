@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
+import { getSession, can } from "@/lib/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -7,8 +8,13 @@ export const dynamic = "force-dynamic";
 const ALLOWED = ["pending", "contacted", "closed"] as const;
 type Status = (typeof ALLOWED)[number];
 
-// Protected by middleware (/api/admin/*). Updates an intake request's status.
+// Protected by middleware (/api/admin/*). Requires the manage_status permission.
 export async function POST(request: NextRequest) {
+  const session = await getSession();
+  if (!can(session, "manage_status")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   let id = "";
   let status = "";
   try {

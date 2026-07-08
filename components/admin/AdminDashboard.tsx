@@ -2,13 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, RefreshCw, Inbox, Shield, Download, FileText } from "lucide-react";
+import Link from "next/link";
+import { LogOut, RefreshCw, Inbox, Shield, Download, FileText, Users } from "lucide-react";
 import {
   exportCsv,
   exportPdf,
   exportFilename,
   type ExportColumn,
 } from "@/lib/adminExport";
+import { TAB_VIEW_PERMISSION, type PermissionKey } from "@/lib/permissions";
+
+interface SessionInfo {
+  username: string;
+  isSuper: boolean;
+  permissions: PermissionKey[];
+}
 
 export interface IntakeRow {
   id: string;
@@ -112,12 +120,21 @@ const partnershipColumns: ExportColumn<PartnershipRow>[] = [
 export function AdminDashboard({
   data,
   loadError,
+  session,
 }: {
   data: AdminData;
   loadError: string | null;
+  session: SessionInfo;
 }) {
   const router = useRouter();
-  const [tab, setTab] = useState<TabKey>("intake");
+
+  const has = (p: PermissionKey) =>
+    session.isSuper || session.permissions.includes(p);
+  const viewableTabs = TABS.filter((t) => has(TAB_VIEW_PERMISSION[t.key]));
+  const canManageStatus = has("manage_status");
+  const canExport = has("export_data");
+
+  const [tab, setTab] = useState<TabKey>(viewableTabs[0]?.key ?? "intake");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -195,19 +212,33 @@ export function AdminDashboard({
             <Shield className="w-5 h-5 text-accent-gold" />
             <span className="font-heading font-bold text-lg">UpliftGrove Admin</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <span className="hidden sm:inline text-sm text-gray-300 mr-1">
+              {session.username}
+              {session.isSuper && (
+                <span className="ml-1 text-xs text-accent-gold">(owner)</span>
+              )}
+            </span>
+            {has("manage_users") && (
+              <Link
+                href="/admin/users"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md hover:bg-white/10 transition-colors"
+              >
+                <Users className="w-4 h-4" /> <span className="hidden sm:inline">Users</span>
+              </Link>
+            )}
             <button
               onClick={() => router.refresh()}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md hover:bg-white/10 transition-colors"
             >
-              <RefreshCw className="w-4 h-4" /> Refresh
+              <RefreshCw className="w-4 h-4" /> <span className="hidden sm:inline">Refresh</span>
             </button>
             <button
               onClick={logout}
               disabled={busy}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-accent-gold text-primary-navy font-semibold hover:bg-opacity-90 transition-opacity disabled:opacity-60"
             >
-              <LogOut className="w-4 h-4" /> Log out
+              <LogOut className="w-4 h-4" /> <span className="hidden sm:inline">Log out</span>
             </button>
           </div>
         </div>
@@ -220,17 +251,27 @@ export function AdminDashboard({
           </div>
         )}
 
+        {viewableTabs.length === 0 ? (
+          <div className="text-center py-20 text-gray-500">
+            <Inbox className="w-10 h-10 mx-auto mb-3 text-gray-400" />
+            <p>You don&apos;t have access to any submissions yet.</p>
+            <p className="text-sm text-gray-400 mt-1">Ask the owner to grant you permissions.</p>
+          </div>
+        ) : (
+        <>
         {/* Summary cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <SummaryCard label="Support Requests" value={counts.intake} highlight={`${newIntake} new`} />
-          <SummaryCard label="Contact Messages" value={counts.contact} />
-          <SummaryCard label="Volunteers" value={counts.volunteer} />
-          <SummaryCard label="Partnerships" value={counts.partnership} />
+          {has("view_support") && (
+            <SummaryCard label="Support Requests" value={counts.intake} highlight={`${newIntake} new`} />
+          )}
+          {has("view_contact") && <SummaryCard label="Contact Messages" value={counts.contact} />}
+          {has("view_volunteer") && <SummaryCard label="Volunteers" value={counts.volunteer} />}
+          {has("view_partnership") && <SummaryCard label="Partnerships" value={counts.partnership} />}
         </div>
 
         {/* Tabs */}
         <div className="flex gap-1 border-b border-gray-200 mb-6 overflow-x-auto">
-          {TABS.map((t) => (
+          {viewableTabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
@@ -251,22 +292,24 @@ export function AdminDashboard({
           <p className="text-sm text-gray-500">
             {activeCount} {activeCount === 1 ? "record" : "records"}
           </p>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => handleExport("csv")}
-              disabled={activeCount === 0}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-gray-300 text-primary-navy bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Download className="w-4 h-4" /> Export CSV
-            </button>
-            <button
-              onClick={() => handleExport("pdf")}
-              disabled={activeCount === 0 || exporting}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-gray-300 text-primary-navy bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <FileText className="w-4 h-4" /> {exporting ? "Preparing…" : "Export PDF"}
-            </button>
-          </div>
+          {canExport && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleExport("csv")}
+                disabled={activeCount === 0}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-gray-300 text-primary-navy bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Download className="w-4 h-4" /> Export CSV
+              </button>
+              <button
+                onClick={() => handleExport("pdf")}
+                disabled={activeCount === 0 || exporting}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-gray-300 text-primary-navy bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <FileText className="w-4 h-4" /> {exporting ? "Preparing…" : "Export PDF"}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Tables */}
@@ -275,11 +318,14 @@ export function AdminDashboard({
             rows={data.intake}
             onStatus={updateStatus}
             updatingId={updatingId}
+            canManage={canManageStatus}
           />
         )}
         {tab === "contact" && <ContactTable rows={data.contact} />}
         {tab === "volunteer" && <VolunteerTable rows={data.volunteer} />}
         {tab === "partnership" && <PartnershipTable rows={data.partnership} />}
+        </>
+        )}
       </main>
     </div>
   );
@@ -329,10 +375,12 @@ function IntakeTable({
   rows,
   onStatus,
   updatingId,
+  canManage,
 }: {
   rows: IntakeRow[];
   onStatus: (id: string, status: string) => void;
   updatingId: string | null;
+  canManage: boolean;
 }) {
   if (rows.length === 0) return <EmptyState />;
   return (
@@ -360,18 +408,28 @@ function IntakeTable({
             </td>
             <td className={`${td} max-w-md whitespace-pre-wrap break-words`}>{r.message}</td>
             <td className={td}>
-              <select
-                value={r.status}
-                disabled={updatingId === r.id}
-                onChange={(e) => onStatus(r.id, e.target.value)}
-                className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 cursor-pointer disabled:opacity-50 ${
-                  statusStyles[r.status] ?? "bg-gray-100 text-gray-700"
-                }`}
-              >
-                <option value="pending">Pending</option>
-                <option value="contacted">Contacted</option>
-                <option value="closed">Closed</option>
-              </select>
+              {canManage ? (
+                <select
+                  value={r.status}
+                  disabled={updatingId === r.id}
+                  onChange={(e) => onStatus(r.id, e.target.value)}
+                  className={`text-xs font-medium rounded-full px-2.5 py-1 border-0 cursor-pointer disabled:opacity-50 ${
+                    statusStyles[r.status] ?? "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  <option value="pending">Pending</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="closed">Closed</option>
+                </select>
+              ) : (
+                <span
+                  className={`inline-block text-xs font-medium rounded-full px-2.5 py-1 capitalize ${
+                    statusStyles[r.status] ?? "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {r.status}
+                </span>
+              )}
             </td>
           </tr>
         ))}

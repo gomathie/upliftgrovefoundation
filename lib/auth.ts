@@ -14,25 +14,41 @@ function getSecret(): Uint8Array | null {
   return new TextEncoder().encode(secret);
 }
 
-export async function createSessionToken(): Promise<string> {
+export interface SessionClaims {
+  sub: string; // "super" for the env owner, otherwise the admin_users row id
+  username: string;
+  isSuper: boolean;
+}
+
+export async function createSessionToken(claims: SessionClaims): Promise<string> {
   const secret = getSecret();
   if (!secret) throw new Error("ADMIN_SESSION_SECRET is not set (min 16 chars).");
-  return new SignJWT({ role: "admin" })
+  return new SignJWT({ username: claims.username, isSuper: claims.isSuper })
     .setProtectedHeader({ alg: "HS256" })
+    .setSubject(claims.sub)
     .setIssuedAt()
     .setExpirationTime(`${SESSION_TTL_SECONDS}s`)
     .sign(secret);
 }
 
-export async function verifySessionToken(token?: string): Promise<boolean> {
+// Edge-safe: verifies the signature and returns the claims (no DB access).
+export async function decodeSession(token?: string): Promise<SessionClaims | null> {
   const secret = getSecret();
-  if (!token || !secret) return false;
+  if (!token || !secret) return null;
   try {
-    await jwtVerify(token, secret);
-    return true;
+    const { payload } = await jwtVerify(token, secret);
+    return {
+      sub: String(payload.sub ?? ""),
+      username: String(payload.username ?? ""),
+      isSuper: payload.isSuper === true,
+    };
   } catch {
-    return false;
+    return null;
   }
+}
+
+export async function verifySessionToken(token?: string): Promise<boolean> {
+  return (await decodeSession(token)) !== null;
 }
 
 // Constant-time-ish string comparison to avoid trivial timing leaks on the

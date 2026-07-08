@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 import { intakeSchema } from "@/lib/intake";
+import { notifyNewSupportRequest } from "@/lib/mail";
 
 // Confidential intake submissions — always dynamic, run on Node, never cached.
 export const runtime = "nodejs";
