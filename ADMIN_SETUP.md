@@ -82,3 +82,26 @@ alter table public.admin_users enable row level security;
 Set `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` (and optionally `ADMIN_USERNAME`)
 in your host's environment variables, alongside the Supabase ones. Admin pages
 are `noindex`.
+
+## Email notifications (new support requests)
+
+When a new support request is submitted, staff are alerted by email (best-effort
+— a mail failure never blocks the submission).
+
+**Privacy by design:** the email contains only the time, general location, and
+whether an alias was given — **never the phone number or message**. Those stay
+in the restricted database; the email just says "log in to review." This follows
+the rule that confidential intake data must not live in an inbox.
+
+Configure SMTP in `.env.local` (or your host's env in production):
+
+```
+SMTP_HOST=smtp.yourprovider.com
+SMTP_PORT=587            # 587 (STARTTLS) or 465 (implicit TLS)
+SMTP_USER=your-smtp-username
+SMTP_PASSWORD=your-smtp-password
+SMTP_FROM_EMAIL=alerts@yourdomain.org
+SMTP_TO_EMAIL=team@yourdomain.org   # where alerts are delivered
+```
+
+If SMTP is not fully set, notifications are simply skipped (logged, not errored).
