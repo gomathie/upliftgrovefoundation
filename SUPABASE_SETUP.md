@@ -122,6 +122,6 @@ client-side code or commit it to git.
 - [x] Intake form has a honeypot that silently drops spam bots (no heavy CAPTCHA).
 - [x] RLS enabled with no public read/write access.
 - [ ] Confirm HTTPS in production (automatic on Vercel/Netlify/Cloudflare).
-- [ ] Wire the Contact / Volunteer / Partnership forms to their routes (intake is done).
+- [x] Wire the Contact / Volunteer / Partnership forms to their routes (all forms are wired).
 - [ ] Decide a data-retention policy for intake submissions (org decision).
 ```
