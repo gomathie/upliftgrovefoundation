@@ -12,8 +12,12 @@ export function Footer() {
             <p className="text-gray-300 mb-6 max-w-md">
               Supporting Ghanaian youth through counseling, guidance, and community programs. Empowering the next generation to thrive.
             </p>
+            <p className="text-gray-400 text-sm">
+              Okra Street, near The Church of Jesus Christ of Latter-day Saints<br />
+              House Number 05, Millenium City, Kasoa, Gomoa East, Central Region, Ghana
+            </p>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-heading font-semibold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2 text-gray-300">
@@ -34,9 +38,9 @@ export function Footer() {
         </div>
         
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} UpliftGrove Foundation. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} UpliftGrove Foundation LBG. All rights reserved.</p>
           <div className="mt-4 md:mt-0">
-            <p>NGO Registration: [NEEDS INPUT]</p>
+            <p>Company Registration: CG079131125 &middot; TIN: C0066475368</p>
           </div>
         </div>
       </div>

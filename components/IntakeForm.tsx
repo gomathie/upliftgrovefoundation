@@ -155,8 +155,8 @@ export function IntakeForm() {
 
       <div className="text-center pt-4 border-t border-gray-100">
         <p className="text-sm text-gray-500 mb-2">Prefer to use WhatsApp directly?</p>
-        <a 
-          href="https://wa.me/1234567890" 
+        <a
+          href="https://wa.me/233508133939"
           target="_blank" 
           rel="noopener noreferrer"
           className="inline-flex items-center text-primary-navy font-medium hover:text-accent-gold transition-colors"

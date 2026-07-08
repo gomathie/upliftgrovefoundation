@@ -11,7 +11,7 @@ export default function PrivacyPolicyPage() {
         
         <div className="prose prose-slate max-w-none text-gray-700 space-y-6">
           <p>
-            <strong>Last Updated:</strong> [NEEDS INPUT - Date]
+            <strong>Last Updated:</strong> July 8, 2026
           </p>
 
           <p>
@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
           <ul className="list-disc pl-6 space-y-2">
             <li><strong>Intake Form Data:</strong> Names (or aliases), locations, phone numbers/WhatsApp numbers, and personal messages submitted through our confidential Get Support form.</li>
             <li><strong>Volunteer/Partner Data:</strong> Names, contact information, and professional details submitted through our Get Involved forms.</li>
-            <li><strong>Donation Data:</strong> Transaction information required to process donations. (Note: We do not store full credit card numbers; these are handled securely by our payment processor, [NEEDS INPUT - Processor Name]).</li>
+            <li><strong>Donation Data:</strong> Transaction information required to process donations. We do not store full card numbers; these are handled securely by our third-party payment gateway.</li>
             <li><strong>Usage Data:</strong> Basic, privacy-respecting analytics to help us understand how our website is used. We do not use invasive tracking scripts on our counseling pages.</li>
           </ul>
 
@@ -61,9 +61,9 @@ export default function PrivacyPolicyPage() {
             If you have any questions or concerns about this Privacy Policy or how your data is handled, please contact us at:
           </p>
           <p>
-            <strong>Email:</strong> [NEEDS INPUT - Email Address]<br />
-            <strong>Phone:</strong> [NEEDS INPUT - Phone Number]<br />
-            <strong>Address:</strong> [NEEDS INPUT - Physical Address]
+            <strong>Email:</strong> kobinamensah73@gmail.com<br />
+            <strong>Phone:</strong> 0546 015 680 / 0508 133 939<br />
+            <strong>Address:</strong> Okra Street, near The Church of Jesus Christ of Latter-day Saints, House Number 05, Millenium City, Kasoa, Gomoa East, Central Region, Ghana
           </p>
         </div>
       </div>

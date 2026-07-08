@@ -11,7 +11,7 @@ export default function TermsOfUsePage() {
         
         <div className="prose prose-slate max-w-none text-gray-700 space-y-6">
           <p>
-            <strong>Last Updated:</strong> [NEEDS INPUT - Date]
+            <strong>Last Updated:</strong> July 8, 2026
           </p>
 
           <p>
@@ -53,9 +53,9 @@ export default function TermsOfUsePage() {
             If you have any questions about these Terms of Use, please contact us at:
           </p>
           <p>
-            <strong>Email:</strong> [NEEDS INPUT - Email Address]<br />
-            <strong>Phone:</strong> [NEEDS INPUT - Phone Number]<br />
-            <strong>Address:</strong> [NEEDS INPUT - Physical Address]
+            <strong>Email:</strong> kobinamensah73@gmail.com<br />
+            <strong>Phone:</strong> 0546 015 680 / 0508 133 939<br />
+            <strong>Address:</strong> Okra Street, near The Church of Jesus Christ of Latter-day Saints, House Number 05, Millenium City, Kasoa, Gomoa East, Central Region, Ghana
           </p>
         </div>
       </div>

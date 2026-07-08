@@ -48,7 +48,7 @@ export default function DonatePage() {
             </button>
             
             <p className="text-xs text-gray-400 text-center mt-4">
-              Secure payment processing powered by [NEEDS INPUT - Payment Processor, e.g., Paystack].
+              Payments are processed through a secure, encrypted payment gateway. We never store your card details.
             </p>
           </div>
 
@@ -86,8 +86,7 @@ export default function DonatePage() {
             <div className="mt-12 p-6 bg-primary-navy/5 rounded-xl border border-primary-navy/10">
               <h3 className="font-heading font-semibold text-primary-navy mb-2">Financial Transparency</h3>
               <p className="text-sm text-gray-600">
-                UpliftGrove Foundation is a registered NGO. Our annual financial reports will be made available here to ensure accountability to our donors and community.
-                [NEEDS INPUT - Link to financial reports when available]
+                UpliftGrove Foundation is a registered NGO. Our annual financial reports will be published here to ensure accountability to our donors and community as they become available.
               </p>
             </div>
           </div>

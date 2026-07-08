@@ -60,25 +60,22 @@ export default function Home() {
               <div className="mx-auto w-16 h-16 bg-primary-navy/10 text-primary-navy rounded-full flex items-center justify-center mb-6">
                 <Users className="w-8 h-8" />
               </div>
-              <h3 className="text-4xl text-accent-gold mb-2">5,000+</h3>
-              <p className="font-medium text-primary-navy text-lg">Youth Supported</p>
-              <p className="text-sm text-gray-500 mt-2">[NEEDS INPUT: update stat]</p>
+              <h3 className="text-4xl text-accent-gold mb-2">2025</h3>
+              <p className="font-medium text-primary-navy text-lg">Registered as an NGO in Ghana</p>
             </div>
             <div className="p-8 rounded-2xl bg-bg-warm-sand">
               <div className="mx-auto w-16 h-16 bg-primary-navy/10 text-primary-navy rounded-full flex items-center justify-center mb-6">
                 <Heart className="w-8 h-8" />
               </div>
-              <h3 className="text-4xl text-accent-gold mb-2">50+</h3>
-              <p className="font-medium text-primary-navy text-lg">Professional Counselors</p>
-              <p className="text-sm text-gray-500 mt-2">[NEEDS INPUT: update stat]</p>
+              <h3 className="text-4xl text-accent-gold mb-2">3</h3>
+              <p className="font-medium text-primary-navy text-lg">Founding Board Members</p>
             </div>
             <div className="p-8 rounded-2xl bg-bg-warm-sand">
               <div className="mx-auto w-16 h-16 bg-primary-navy/10 text-primary-navy rounded-full flex items-center justify-center mb-6">
                 <GraduationCap className="w-8 h-8" />
               </div>
-              <h3 className="text-4xl text-accent-gold mb-2">25</h3>
-              <p className="font-medium text-primary-navy text-lg">Communities Reached</p>
-              <p className="text-sm text-gray-500 mt-2">[NEEDS INPUT: update stat]</p>
+              <h3 className="text-4xl text-accent-gold mb-2">3</h3>
+              <p className="font-medium text-primary-navy text-lg">Core Program Areas</p>
             </div>
           </div>
         </div>
@@ -132,9 +129,9 @@ export default function Home() {
                 />
               </div>
               <div className="p-8">
-                <h3 className="text-xl mb-3">[Program Name: NEEDS INPUT]</h3>
+                <h3 className="text-xl mb-3">Music Therapy</h3>
                 <p className="text-gray-600 mb-6 line-clamp-3">
-                  [Program description placeholder. E.g., Peer mentorship networks connecting experienced young adults with teens entering high school.]
+                  Music-based therapeutic techniques that help young people process trauma, express emotion, and build resilience alongside our counseling services.
                 </p>
                 <Link href="/programs#program-2" className="text-primary-navy font-medium hover:text-accent-gold inline-flex items-center">
                   Learn more <ArrowRight className="ml-1 w-4 h-4" />
@@ -154,9 +151,9 @@ export default function Home() {
                 />
               </div>
               <div className="p-8">
-                <h3 className="text-xl mb-3">[Program Name: NEEDS INPUT]</h3>
+                <h3 className="text-xl mb-3">Youth Advocacy &amp; Community Development</h3>
                 <p className="text-gray-600 mb-6 line-clamp-3">
-                  [Program description placeholder. E.g., Community outreach and life skills workshops focusing on resilience and leadership.]
+                  Humanitarian aid, education support, and human rights advocacy that address the everyday needs of the youth and communities we serve.
                 </p>
                 <Link href="/programs#program-3" className="text-primary-navy font-medium hover:text-accent-gold inline-flex items-center">
                   Learn more <ArrowRight className="ml-1 w-4 h-4" />

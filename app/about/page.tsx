@@ -25,7 +25,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl mb-6">Our Story</h2>
               <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-                [NEEDS INPUT: Founding story]. The UpliftGrove Foundation was established with a simple but powerful belief: every young person deserves access to guidance and mental health support, regardless of their background.
+                UpliftGrove Foundation LBG was incorporated in Ghana on 14th November 2025, established with a simple but powerful belief: every young person deserves access to guidance and mental health support, regardless of their background.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed">
                 We recognized a critical gap in community support structures for youth navigating the complexities of modern life, education, and personal growth in Ghana. By providing safe, confidential counseling and mentorship, we empower them to build brighter futures.
@@ -69,26 +69,29 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl mb-12">Our Team & Board</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-16">
-            Meet the dedicated professionals and community leaders behind UpliftGrove Foundation. [NEEDS INPUT: Add actual bios and photos below]
+            Meet the Executive Council and leadership behind UpliftGrove Foundation.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Team Member Placeholder */}
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-white p-8 rounded-2xl shadow-sm text-center">
+            {[
+              { seed: "team1", name: "Isaac Mensah", role: "Executive Council Member / Director" },
+              { seed: "team2", name: "Martha Ankai-Macaidoo", role: "Executive Council Member / Director" },
+              { seed: "team3", name: "Nana Kofi Entwi-Mensah", role: "Executive Council Member / Director & Secretary" },
+            ].map((member) => (
+              <div key={member.seed} className="bg-white p-8 rounded-2xl shadow-sm text-center">
                 <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden mb-6 border-4 border-bg-warm-sand">
                   <Image
-                     src={`https://picsum.photos/seed/team${item}/400/400`}
-                     alt="Team member placeholder"
+                     src={`https://picsum.photos/seed/${member.seed}/400/400`}
+                     alt={`${member.name} placeholder photo`}
                      fill
                      className="object-cover"
                      referrerPolicy="no-referrer"
                   />
                 </div>
-                <h3 className="text-xl mb-1">Name [NEEDS INPUT]</h3>
-                <p className="text-accent-gold font-medium mb-4">Role / Title</p>
+                <h3 className="text-xl mb-1">{member.name}</h3>
+                <p className="text-accent-gold font-medium mb-4">{member.role}</p>
                 <p className="text-gray-600 text-sm">
-                  Brief biography highlighting their experience in youth counseling, education, or community development.
+                  A founding member of UpliftGrove Foundation's Executive Council, helping guide the organization's mission to support Ghanaian youth through counseling and community development.
                 </p>
               </div>
             ))}
@@ -96,18 +99,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Partners & Accreditation */}
+      {/* Accreditation */}
       <section className="py-20 bg-primary-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl text-white mb-12">Partners & Accreditation</h2>
-          <div className="flex flex-wrap justify-center gap-8 items-center opacity-70">
-            {/* Logos Placeholders */}
-            <div className="h-16 w-48 bg-white/10 rounded flex items-center justify-center text-sm">[Partner Logo]</div>
-            <div className="h-16 w-48 bg-white/10 rounded flex items-center justify-center text-sm">[Ministry Logo]</div>
-            <div className="h-16 w-48 bg-white/10 rounded flex items-center justify-center text-sm">[Sponsor Logo]</div>
-          </div>
-          <p className="mt-12 text-gray-400 max-w-2xl mx-auto text-sm">
-             UpliftGrove Foundation is a registered NGO in Ghana. [NEEDS INPUT: Registration Number / Details]
+          <h2 className="text-3xl text-white mb-6">Accreditation</h2>
+          <p className="text-gray-300 max-w-2xl mx-auto mb-4">
+            As a newly registered foundation, we are actively seeking partnerships with schools, ministries, and sponsors to expand our reach. <a href="/get-involved" className="text-accent-gold underline hover:text-white">Partner with us.</a>
+          </p>
+          <p className="mt-8 text-gray-400 max-w-2xl mx-auto text-sm">
+             UpliftGrove Foundation LBG is a registered NGO in Ghana (Company Limited by Guarantee), incorporated 14th November 2025. Registration No. CG079131125 &middot; TIN C0066475368 &middot; Registrar-General&apos;s Department, Accra.
           </p>
         </div>
       </section>

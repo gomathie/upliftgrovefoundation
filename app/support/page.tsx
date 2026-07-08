@@ -25,10 +25,10 @@ export default function SupportPage() {
           <div>
             <h3 className="text-lg font-heading font-semibold text-primary-navy mb-2">Need Immediate Help?</h3>
             <p className="text-text-charcoal mb-4">
-              If you are in immediate danger or experiencing an acute crisis, please contact the local emergency hotline right away.
+              If you are in immediate danger or experiencing an acute crisis, please contact the national emergency line right away, or go to your nearest hospital or police station.
             </p>
             <p className="font-bold text-primary-navy">
-              Emergency Hotline: [NEEDS INPUT - Local Crisis Number]
+              National Emergency Line: 112 &middot; Ambulance: 193 &middot; Police: 191
             </p>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function SupportPage() {
 
         <div className="mt-12 text-center text-gray-500 text-sm">
           <p>
-            A counselor will reach out within [NEEDS INPUT - e.g., 24 hours] of receiving your message.
+            A counselor will reach out within 24–48 hours of receiving your message.
           </p>
         </div>
       </div>

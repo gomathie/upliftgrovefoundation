@@ -39,18 +39,23 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-xl mb-1">Office Location</h3>
-                  <p className="text-gray-600">[NEEDS INPUT: Physical Address, e.g., Accra, Ghana]</p>
-                  <p className="text-sm text-gray-500 mt-1">Office Hours: [NEEDS INPUT, e.g., Mon-Fri, 9am-5pm]</p>
+                  <p className="text-gray-600">
+                    Okra Street, near The Church of Jesus Christ of Latter-day Saints,<br />
+                    House Number 05, Millenium City, Kasoa, Gomoa East, Central Region, Ghana
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">Digital Address: CG-1575-9030</p>
+                  <p className="text-sm text-gray-500 mt-1">Office Hours: Monday – Friday, 9:00 AM – 5:00 PM (GMT)</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start">
                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary-navy shadow-sm mr-4 flex-shrink-0">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-xl mb-1">Phone Number</h3>
-                  <p className="text-gray-600">[NEEDS INPUT: General Phone Number]</p>
+                  <p className="text-gray-600">0546 015 680</p>
+                  <p className="text-gray-600">0508 133 939</p>
                 </div>
               </div>
 
@@ -60,7 +65,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-xl mb-1">Email Address</h3>
-                  <p className="text-gray-600">[NEEDS INPUT: Email Address, e.g., info@upliftgrove.org]</p>
+                  <p className="text-gray-600">kobinamensah73@gmail.com</p>
                 </div>
               </div>
             </div>

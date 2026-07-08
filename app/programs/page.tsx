@@ -79,18 +79,18 @@ export default function ProgramsPage() {
               />
             </div>
             <div>
-              <h2 className="text-3xl mb-4">[Program 2: NEEDS INPUT]</h2>
+              <h2 className="text-3xl mb-4">Music Therapy</h2>
               <p className="text-lg text-gray-600 mb-6">
-                [Description of the second core program. For example, a mentorship initiative pairing young people with successful professionals in their communities.]
+                A registered core activity of our foundation. We use music-based therapeutic techniques alongside professional counseling to help young people process trauma, express emotion, and build resilience in a way that feels natural and engaging.
               </p>
               <ul className="space-y-3 text-gray-600 mb-8">
                 <li className="flex items-start">
                   <span className="text-accent-gold mr-2 mt-1">✓</span>
-                  [Key outcome 1]
+                  Emotional expression and stress relief through music
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-gold mr-2 mt-1">✓</span>
-                  [Key outcome 2]
+                  Complementary support alongside talk therapy and counseling
                 </li>
               </ul>
             </div>
@@ -101,18 +101,18 @@ export default function ProgramsPage() {
         <section id="program-3" className="scroll-mt-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
-              <h2 className="text-3xl mb-4">[Program 3: NEEDS INPUT]</h2>
+              <h2 className="text-3xl mb-4">Youth Advocacy &amp; Community Development</h2>
               <p className="text-lg text-gray-600 mb-6">
-                [Description of the third core program. For example, community outreach and life skills workshops held in local schools.]
+                Reflecting our registered mandate to provide humanitarian aid, promote human rights, and implement development projects, this program delivers education support, health services, and advocacy work that address the everyday needs of the youth and communities we serve.
               </p>
                <ul className="space-y-3 text-gray-600 mb-8">
                 <li className="flex items-start">
                   <span className="text-accent-gold mr-2 mt-1">✓</span>
-                  [Key outcome 1]
+                  Education access and support services
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-gold mr-2 mt-1">✓</span>
-                  [Key outcome 2]
+                  Human rights and youth advocacy initiatives
                 </li>
               </ul>
             </div>
@@ -132,44 +132,11 @@ export default function ProgramsPage() {
 
       {/* Impact Stories */}
       <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl text-center mb-16">Impact Stories</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Story 1 */}
-            <div className="bg-bg-warm-sand p-8 rounded-2xl border border-gray-100">
-              <div className="text-accent-gold text-4xl font-serif mb-4">"</div>
-              <p className="text-gray-700 italic text-lg mb-6">
-                "The counseling I received at UpliftGrove completely changed my perspective on my future. I felt heard, understood, and finally had the tools to manage my anxiety about school."
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary-navy/10 rounded-full flex items-center justify-center text-primary-navy font-bold">
-                  K
-                </div>
-                <div>
-                  <p className="font-heading font-semibold text-primary-navy">Kwame *</p>
-                  <p className="text-sm text-gray-500">Age 17 (Name changed for privacy)</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Story 2 */}
-            <div className="bg-bg-warm-sand p-8 rounded-2xl border border-gray-100">
-              <div className="text-accent-gold text-4xl font-serif mb-4">"</div>
-              <p className="text-gray-700 italic text-lg mb-6">
-                "[NEEDS INPUT: Add an anonymized impact story or quote from a beneficiary showing the value of the programs.]"
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary-navy/10 rounded-full flex items-center justify-center text-primary-navy font-bold">
-                  A
-                </div>
-                <div>
-                  <p className="font-heading font-semibold text-primary-navy">Ama *</p>
-                  <p className="text-sm text-gray-500">Age 19 (Name changed for privacy)</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl mb-6">Impact Stories</h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            UpliftGrove Foundation LBG was registered in Ghana in November 2025 and is in the early stages of running these programs. As we work with young people and communities, we will share real, anonymized stories here with documented consent — check back soon.
+          </p>
         </div>
       </section>
     </div>
